@@ -114,16 +114,26 @@ def main():
     else:
         cache_base = os.path.join(PLUGIN_DIR, "_cache")
 
-    # 1. Find TTML files
+    # 1. Load existing index (to preserve entries when Apple cleans up TTMLs)
+    existing_index = {}
+    if os.path.exists(OUTPUT_JSON):
+        with open(OUTPUT_JSON, "r", encoding="utf-8") as f:
+            for entry in json.load(f):
+                existing_index[entry["track_id"]] = entry
+        print(f"📂 Bestehender Index: {len(existing_index)} Episoden")
+
+    # 2. Find TTML files
     ttml_files = {}
     for path in glob.glob(os.path.join(TTML_BASE, "**/transcript_*.ttml"), recursive=True):
         match = re.search(r"transcript_(\d+)\.ttml", path)
         if match:
             ttml_files[match.group(1)] = path
 
-    print(f"🔍 {len(ttml_files)} Transkripte gefunden")
+    print(f"🔍 {len(ttml_files)} TTML-Transkripte in Apple Podcasts")
 
-    # 2. Query SQLite
+    # 3. Query SQLite for all track IDs (new from TTML + existing from index)
+    all_track_ids = list(set(list(ttml_files.keys()) + list(existing_index.keys())))
+
     tmp_dir = tempfile.mkdtemp(prefix="podcast_sync_")
     try:
         tmp_db = os.path.join(tmp_dir, "MTLibrary.sqlite")
@@ -136,8 +146,7 @@ def main():
         conn = sqlite3.connect(tmp_db)
         conn.row_factory = sqlite3.Row
 
-        track_ids = list(ttml_files.keys())
-        placeholders = ",".join(["?" for _ in track_ids])
+        placeholders = ",".join(["?" for _ in all_track_ids])
 
         rows = conn.execute(f"""
             SELECT
@@ -153,13 +162,13 @@ def main():
             FROM ZMTEPISODE e
             LEFT JOIN ZMTPODCAST p ON e.ZPODCAST = p.Z_PK
             WHERE e.ZSTORETRACKID IN ({placeholders})
-        """, track_ids).fetchall()
+        """, all_track_ids).fetchall()
 
         conn.close()
     finally:
         shutil.rmtree(tmp_dir, ignore_errors=True)
 
-    # 3. Build index
+    # 4. Build index from SQLite results
     episodes = []
     for row in rows:
         tid = str(row["track_id"])
@@ -185,7 +194,7 @@ def main():
             "web_url": row["web_url"] or "",
         })
 
-    # Also add TTML files without metadata
+    # Add TTML files without metadata
     found_ids = {e["track_id"] for e in episodes}
     for tid, path in ttml_files.items():
         if tid not in found_ids:
@@ -200,14 +209,28 @@ def main():
                 "description": "",
                 "web_url": "",
             })
+            found_ids.add(tid)
+
+    # 5. Merge: keep existing entries that still have .txt in cache
+    cache_dir = os.path.join(cache_base, "transcripts")
+    os.makedirs(cache_dir, exist_ok=True)
+    merged_count = 0
+
+    for tid, entry in existing_index.items():
+        if tid not in found_ids:
+            cache_file = os.path.join(cache_dir, f"{tid}.txt")
+            if os.path.exists(cache_file):
+                episodes.append(entry)
+                found_ids.add(tid)
+                merged_count += 1
+
+    if merged_count:
+        print(f"🔄 {merged_count} Episoden aus bestehendem Cache uebernommen")
 
     # Sort by date descending
     episodes.sort(key=lambda e: e.get("date") or "0000", reverse=True)
 
-    # 4. Parse and cache transcripts as plain text
-    cache_dir = os.path.join(cache_base, "transcripts")
-    os.makedirs(cache_dir, exist_ok=True)
-
+    # 6. Parse and cache transcripts as plain text (only new TTMLs)
     for ep in episodes:
         tid = ep["track_id"]
         ttml_path = ep.get("ttml_path", "")
@@ -228,7 +251,7 @@ def main():
         except Exception as e:
             print(f"   ⚠️  Fehler bei {tid}: {e}")
 
-    # 5. Write JSON
+    # 7. Write JSON
     os.makedirs(os.path.dirname(OUTPUT_JSON), exist_ok=True)
     # Remove ttml_path from JSON (not needed, we have cached text)
     for ep in episodes:
