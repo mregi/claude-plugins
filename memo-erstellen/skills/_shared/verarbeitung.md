@@ -4,9 +4,11 @@ Erstelle aus dem Input ein strukturiertes Memo. Sprache = Sprache des Inputs.
 
 ## Konfiguration
 
+Persoenliche Einstellungen liegen unter `~/.claude/plugin-config/memo-erstellen/`.
+
 ### config.json
 
-Pruefe ob `${CLAUDE_PLUGIN_ROOT}/config.json` existiert.
+Pruefe ob `~/.claude/plugin-config/memo-erstellen/config.json` existiert.
 
 **Falls vorhanden →** Lies `memo_output_dir` und mache weiter.
 
@@ -20,7 +22,7 @@ Pruefe ob `${CLAUDE_PLUGIN_ROOT}/config.json` existiert.
 
 2. Warte auf Antwort des Users.
 
-3. Erstelle `${CLAUDE_PLUGIN_ROOT}/config.json`:
+3. Erstelle `~/.claude/plugin-config/memo-erstellen/config.json`:
    ```json
    { "memo_output_dir": "{vom-user-angegebener-pfad}" }
    ```
@@ -37,17 +39,21 @@ Pruefe ob `${CLAUDE_PLUGIN_ROOT}/config.json` existiert.
 
 ### leserprofil.md
 
-Pruefe ob `${CLAUDE_PLUGIN_ROOT}/skills/_shared/leserprofil.md` existiert.
+Pruefe ob `~/.claude/plugin-config/memo-erstellen/leserprofil.md` existiert.
 
 **Falls vorhanden →** Weiter.
 
-**Falls NICHT vorhanden →** Kopiere `${CLAUDE_PLUGIN_ROOT}/skills/_shared/leserprofil-template.md` nach `${CLAUDE_PLUGIN_ROOT}/skills/_shared/leserprofil.md` und zeige dem User:
-> Leserprofil aus Template erstellt. Memos sind erstmal neutral.
-> Du kannst `leserprofil.md` spaeter personalisieren — trage deine Prinzipien und Referenzzitate ein, dann werden Denkanstoesse auf dich zugeschnitten.
+**Falls NICHT vorhanden →** Frage den User:
+> **Hast du ein bestehendes Leserprofil?** Gib den Pfad an, oder ich erstelle eins aus dem Template.
+
+- User gibt Pfad → kopiere die Datei nach `~/.claude/plugin-config/memo-erstellen/leserprofil.md`
+- User sagt nein / hat keins → kopiere `${CLAUDE_PLUGIN_ROOT}/skills/_shared/leserprofil-template.md` nach `~/.claude/plugin-config/memo-erstellen/leserprofil.md` und zeige:
+  > Leserprofil aus Template erstellt. Memos sind erstmal neutral.
+  > Du kannst `leserprofil.md` spaeter personalisieren — trage deine Prinzipien und Referenzzitate ein, dann werden Denkanstoesse auf dich zugeschnitten.
 
 ### Ausgabepfad
 
-Lies `${CLAUDE_PLUGIN_ROOT}/config.json` fuer den Ausgabepfad. Das Feld `memo_output_dir` bestimmt wo Memos gespeichert werden. Tilde (`~`) am Anfang durch den Home-Pfad des Users ersetzen.
+Lies `~/.claude/plugin-config/memo-erstellen/config.json` fuer den Ausgabepfad. Das Feld `memo_output_dir` bestimmt wo Memos gespeichert werden. Tilde (`~`) am Anfang durch den Home-Pfad des Users ersetzen.
 
 ## Frontmatter
 

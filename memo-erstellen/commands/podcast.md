@@ -9,7 +9,7 @@ Verarbeitet eine Podcast-Episode aus Apple Podcasts zu einem strukturierten Memo
 
 Lies die gemeinsamen Regeln fuer Verarbeitung, Leserprofil und Fremdwoerter:
 - [Verarbeitung](${CLAUDE_PLUGIN_ROOT}/skills/_shared/verarbeitung.md)
-- [Leserprofil](${CLAUDE_PLUGIN_ROOT}/skills/_shared/leserprofil.md)
+- [Leserprofil](~/.claude/plugin-config/memo-erstellen/leserprofil.md)
 - [Fremdwoerter](${CLAUDE_PLUGIN_ROOT}/skills/_shared/fremdwoerter.md)
 
 ---
@@ -60,13 +60,13 @@ Aus `episode-index.json` uebernehmen: podcast, episode, datum, dauer, author.
 
 Erstelle das Memo gemaess [Verarbeitung](${CLAUDE_PLUGIN_ROOT}/skills/_shared/verarbeitung.md).
 
-Beachte das [Leserprofil](${CLAUDE_PLUGIN_ROOT}/skills/_shared/leserprofil.md) fuer Denkanstoesse und Zitatauswahl.
+Beachte das [Leserprofil](~/.claude/plugin-config/memo-erstellen/leserprofil.md) fuer Denkanstoesse und Zitatauswahl.
 
 Beachte die [Fremdwort-Regeln](${CLAUDE_PLUGIN_ROOT}/skills/_shared/fremdwoerter.md).
 
 ## Schritt 6: Speichern + Index
 
-Lies `${CLAUDE_PLUGIN_ROOT}/config.json` fuer `memo_output_dir`.
+Lies `~/.claude/plugin-config/memo-erstellen/config.json` fuer `memo_output_dir`.
 
 1. Memo speichern als `{memo_output_dir}/{YYYY-MM-DD}_{titel-slug}.md`
 2. Rohtranskript verschieben: `_cache/transcripts/{TRACK_ID}.txt` → `{memo_output_dir}/_raw/{gleicher-dateiname}.txt`

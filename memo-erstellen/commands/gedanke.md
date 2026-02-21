@@ -8,7 +8,7 @@ Haelt einen eigenen Gedanken, eine Idee oder eine Reflexion als strukturiertes M
 
 Lies die gemeinsamen Regeln fuer Verarbeitung, Leserprofil und Fremdwoerter:
 - [Verarbeitung](${CLAUDE_PLUGIN_ROOT}/skills/_shared/verarbeitung.md)
-- [Leserprofil](${CLAUDE_PLUGIN_ROOT}/skills/_shared/leserprofil.md)
+- [Leserprofil](~/.claude/plugin-config/memo-erstellen/leserprofil.md)
 - [Fremdwoerter](${CLAUDE_PLUGIN_ROOT}/skills/_shared/fremdwoerter.md)
 
 ---
@@ -30,11 +30,11 @@ Erstelle das Memo gemaess [Verarbeitung](${CLAUDE_PLUGIN_ROOT}/skills/_shared/ve
 
 Frontmatter: `quelle: eigener-gedanke`, `datum: {heute}`.
 
-Beachte das [Leserprofil](${CLAUDE_PLUGIN_ROOT}/skills/_shared/leserprofil.md) — auch eigene Gedanken duerfen kritisch hinterfragt werden.
+Beachte das [Leserprofil](~/.claude/plugin-config/memo-erstellen/leserprofil.md) — auch eigene Gedanken duerfen kritisch hinterfragt werden.
 
 ## Schritt 3: Speichern + Index
 
-Lies `${CLAUDE_PLUGIN_ROOT}/config.json` fuer `memo_output_dir`.
+Lies `~/.claude/plugin-config/memo-erstellen/config.json` fuer `memo_output_dir`.
 
 1. Memo speichern als `{memo_output_dir}/{YYYY-MM-DD}_{titel-slug}.md`
 2. Kein Rohtranskript noetig
