@@ -4,6 +4,49 @@ Erstelle aus dem Input ein strukturiertes Memo. Sprache = Sprache des Inputs.
 
 ## Konfiguration
 
+### config.json
+
+Pruefe ob `${CLAUDE_PLUGIN_ROOT}/config.json` existiert.
+
+**Falls vorhanden →** Lies `memo_output_dir` und mache weiter.
+
+**Falls NICHT vorhanden →** Ersteinrichtung:
+
+1. Zeige dem User:
+   > Willkommen bei memo-erstellen! Ich richte das Plugin fuer dich ein.
+   >
+   > **Wo sollen deine Memos gespeichert werden?**
+   > (z.B. `~/Documents/memos` oder `~/Dropbox/workspace/wissen/memos`)
+
+2. Warte auf Antwort des Users.
+
+3. Erstelle `${CLAUDE_PLUGIN_ROOT}/config.json`:
+   ```json
+   { "memo_output_dir": "{vom-user-angegebener-pfad}" }
+   ```
+
+4. Erstelle den Zielordner + `_raw/` Unterordner falls noetig.
+
+5. Erstelle `_index.md` im Zielordner falls nicht vorhanden:
+   ```markdown
+   # Memo-Index
+
+   | Datum | Titel | Quelle | Labels |
+   |-------|-------|--------|--------|
+   ```
+
+### leserprofil.md
+
+Pruefe ob `${CLAUDE_PLUGIN_ROOT}/skills/_shared/leserprofil.md` existiert.
+
+**Falls vorhanden →** Weiter.
+
+**Falls NICHT vorhanden →** Kopiere `${CLAUDE_PLUGIN_ROOT}/skills/_shared/leserprofil-template.md` nach `${CLAUDE_PLUGIN_ROOT}/skills/_shared/leserprofil.md` und zeige dem User:
+> Leserprofil aus Template erstellt. Memos sind erstmal neutral.
+> Du kannst `leserprofil.md` spaeter personalisieren — trage deine Prinzipien und Referenzzitate ein, dann werden Denkanstoesse auf dich zugeschnitten.
+
+### Ausgabepfad
+
 Lies `${CLAUDE_PLUGIN_ROOT}/config.json` fuer den Ausgabepfad. Das Feld `memo_output_dir` bestimmt wo Memos gespeichert werden. Tilde (`~`) am Anfang durch den Home-Pfad des Users ersetzen.
 
 ## Frontmatter
