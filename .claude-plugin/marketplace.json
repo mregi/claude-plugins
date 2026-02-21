@@ -1,0 +1,14 @@
+{
+  "name": "mregi-plugins",
+  "description": "Personal Claude Code plugins by Mattia Regi",
+  "owner": {
+    "name": "Mattia Regi"
+  },
+  "plugins": [
+    {
+      "name": "memo-erstellen",
+      "source": "./memo-erstellen",
+      "description": "Wissensquellen (Podcast, YouTube, Zitate, Gedanken) in strukturierte Memos verarbeiten"
+    }
+  ]
+}

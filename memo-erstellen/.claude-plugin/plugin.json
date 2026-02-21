@@ -1,0 +1,9 @@
+{
+  "name": "memo-erstellen",
+  "version": "1.1.0",
+  "description": "Wissensquellen (Podcast, YouTube, Zitate, Gedanken) in strukturierte Memos verarbeiten",
+  "author": {
+    "name": "Mattia Regi"
+  },
+  "keywords": ["knowledge", "memos", "podcast", "youtube", "notes", "wissen"]
+}

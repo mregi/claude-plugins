@@ -1,0 +1,10 @@
+# Persoenliche Config (pro User)
+config.json
+leserprofil.md
+
+# Cache und Build-Artefakte
+_cache/
+_dist/
+
+# macOS
+.DS_Store
