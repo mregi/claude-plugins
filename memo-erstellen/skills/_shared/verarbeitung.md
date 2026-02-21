@@ -4,62 +4,77 @@ Erstelle aus dem Input ein strukturiertes Memo. Sprache = Sprache des Inputs.
 
 ## Konfiguration
 
-Persoenliche Einstellungen liegen unter `~/.claude/plugin-config/memo-erstellen/`.
+Leserprofil und Cache liegen im Memos-Ordner (`{memo_output_dir}/`). Optional: `config.json` unter `~/.claude/plugin-config/memo-erstellen/` fuer den Ausgabepfad.
 
-**WICHTIG — Ersteinrichtung Schritt fuer Schritt:**
+**WICHTIG:**
 - Jede Frage EINZELN stellen und auf die Antwort des Users warten.
 - NICHT mehrere Fragen auf einmal stellen.
 - NICHTS automatisch ableiten — weder aus CLAUDE.md noch aus der Projektstruktur.
 
-### Schritt 1: config.json
+### Schritt 1: Memos-Ordner ermitteln
 
+Pruefe in dieser Reihenfolge:
+
+**1. config.json vorhanden?**
 Pruefe ob `~/.claude/plugin-config/memo-erstellen/config.json` existiert.
+- Falls vorhanden → lies `memo_output_dir` → gehe zu Schritt 2.
 
-**Falls vorhanden →** Lies `memo_output_dir` und gehe zu Schritt 2.
+**2. Auto-Discovery** (falls keine config.json):
+Suche im aktuellen Arbeitsverzeichnis:
+- Existiert `_index.md` im aktuellen Ordner? → Aktueller Ordner = Memos-Ordner.
+- Existiert `wissen/memos/_index.md`? → `./wissen/memos/` = Memos-Ordner.
 
-**Falls NICHT vorhanden →** Frage den User:
+Falls gefunden → verwende diesen Pfad als `{memo_output_dir}` → gehe zu Schritt 2.
 
-> Willkommen bei memo-erstellen! Ich richte das Plugin fuer dich ein.
->
-> **Wo sollen deine Memos gespeichert werden?**
+**3. Nichts gefunden?** → Frage den User:
+
+> **Wo liegt dein Memos-Ordner?**
 > (z.B. `~/Documents/memos` oder `~/Dropbox/workspace/wissen/memos`)
 
 ⛔ STOPP — Warte auf Antwort. Erst weitermachen wenn der User einen Pfad nennt.
 
-Dann:
-1. Erstelle `~/.claude/plugin-config/memo-erstellen/config.json`:
-   ```json
-   { "memo_output_dir": "{vom-user-angegebener-pfad}" }
-   ```
-2. Erstelle den Zielordner + `_raw/` Unterordner falls noetig.
-3. Erstelle `_index.md` im Zielordner falls nicht vorhanden:
-   ```markdown
-   # Memo-Index
+Dann: Erstelle `~/.claude/plugin-config/memo-erstellen/config.json`:
+```json
+{ "memo_output_dir": "{vom-user-angegebener-pfad}" }
+```
 
-   | Datum | Titel | Quelle | Labels |
-   |-------|-------|--------|--------|
-   ```
+**In allen Faellen:** Tilde (`~`) am Anfang durch den absoluten Home-Pfad ersetzen. `{memo_output_dir}` ist ab hier immer ein absoluter Pfad.
 
-### Schritt 2: leserprofil.md
+### Schritt 2: Leserprofil
 
-Pruefe ob `~/.claude/plugin-config/memo-erstellen/leserprofil.md` existiert.
+Pruefe ob `{memo_output_dir}/leserprofil.md` existiert.
 
 **Falls vorhanden →** Gehe zu Schritt 3.
 
-**Falls NICHT vorhanden →** Frage den User:
+**Falls NICHT vorhanden →** Zeige verfuegbare Profile:
 
-> **Hast du ein bestehendes Leserprofil?** Gib den Pfad an, oder ich erstelle eins aus dem Template.
+> Kein Leserprofil gefunden. Verfuegbare Profile:
+> 1. **der-liberale** — Freiheit als Abwesenheit von Zwang, Eigenverantwortung, Skepsis gegenueber Machtkonzentration
+> 2. **der-linke** — Positive Freiheit, Solidaritaet, Strukturen praegen Schicksale
+> 3. **der-rechte** — Ordnung, Tradition, kulturelle Identitaet, Gemeinschaft vor Individuum
+> 4. **der-woke** — Machtstrukturen, Sprache formt Realitaet, Identitaetspolitik
+> 5. **der-iyi** — Intellectual Yet Idiot (nach Taleb), Satire auf Expertentum ohne Skin in the Game
+> 6. **template** — Neutrales Template zum selbst ausfuellen
+>
+> Welches Profil? (Oder eigenes ablegen: `{memo_output_dir}/leserprofil.md`)
 
-⛔ STOPP — Warte auf Antwort. NIEMALS automatisch das Template kopieren ohne zu fragen.
+⛔ STOPP — Warte auf Auswahl.
 
-- User gibt Pfad → kopiere die Datei nach `~/.claude/plugin-config/memo-erstellen/leserprofil.md`
-- User sagt nein / hat keins → kopiere `${CLAUDE_PLUGIN_ROOT}/skills/_shared/leserprofil-template.md` nach `~/.claude/plugin-config/memo-erstellen/leserprofil.md` und zeige:
-  > Leserprofil aus Template erstellt. Memos sind erstmal neutral.
-  > Du kannst `leserprofil.md` spaeter personalisieren — trage deine Prinzipien und Referenzzitate ein, dann werden Denkanstoesse auf dich zugeschnitten.
+Kopiere `${CLAUDE_PLUGIN_ROOT}/skills/_shared/leserprofil-{auswahl}.md` nach `{memo_output_dir}/leserprofil.md`.
 
-### Schritt 3: Ausgabepfad
+### Schritt 3: Ordnerstruktur sicherstellen
 
-Lies `~/.claude/plugin-config/memo-erstellen/config.json` fuer den Ausgabepfad. Das Feld `memo_output_dir` bestimmt wo Memos gespeichert werden. Tilde (`~`) am Anfang durch den Home-Pfad des Users ersetzen.
+Erstelle falls noetig:
+- `{memo_output_dir}/_raw/`
+- `{memo_output_dir}/_cache/`
+- `{memo_output_dir}/_cache/transcripts/`
+- `{memo_output_dir}/_index.md`:
+  ```markdown
+  # Memo-Index
+
+  | Datum | Titel | Quelle | Labels |
+  |-------|-------|--------|--------|
+  ```
 
 ## Frontmatter
 
@@ -168,7 +183,7 @@ Jeder Denkanstoß enthaelt ein **konkretes Beispiel** oder ein **Gedankenexperim
 {memo_output_dir}/{YYYY-MM-DD}_{titel-slug}.md
 ```
 
-`{memo_output_dir}` = Wert aus `config.json`.
+`{memo_output_dir}` = Wert aus Schritt 1 (Konfiguration).
 
 Dateiname: Kleinbuchstaben, Bindestriche, max 120 Zeichen. Datum = Datum des Originals.
 
@@ -176,7 +191,7 @@ Dateiname: Kleinbuchstaben, Bindestriche, max 120 Zeichen. Datum = Datum des Ori
 
 Das Rohtranskript wird **nicht** ins Memo kopiert sondern als separate Datei abgelegt:
 
-1. **Verschiebe** (nicht kopieren) das Transkript nach `{memo_output_dir}/_raw/{gleicher-dateiname-wie-memo}.txt`
+1. **Verschiebe** (nicht kopieren) das Transkript von `{memo_output_dir}/_cache/transcripts/` nach `{memo_output_dir}/_raw/{gleicher-dateiname-wie-memo}.txt`
 2. Im Memo am Ende relativ verlinken:
 
 ```markdown
@@ -188,8 +203,11 @@ Bei kurzen Inputs (Zitate, Gedanken) entfaellt dieser Abschnitt.
 
 ## Cache-Verhalten
 
-- **`_cache/episode-index.json`** — bleibt bestehen. Ist das Verzeichnis aller verfuegbaren Episoden. Wird bei jedem `podcast-sync.py`-Lauf aktualisiert.
-- **`_cache/transcripts/{ID}.txt`** — wird nach Verarbeitung ins Memo verschoben. Bereits verarbeitete Episoden haben kein Transkript mehr im Cache.
+Der Cache liegt unter `{memo_output_dir}/_cache/`.
+
+- **`{memo_output_dir}/_cache/episode-index.json`** — bleibt bestehen. Ist das Verzeichnis aller verfuegbaren Episoden. Wird bei jedem `podcast-sync.py`-Lauf aktualisiert.
+- **`{memo_output_dir}/_cache/youtube-index.json`** — bleibt bestehen. Index aller heruntergeladenen YouTube-Transkripte.
+- **`{memo_output_dir}/_cache/transcripts/{ID}.txt`** — wird nach Verarbeitung ins Memo verschoben (`_raw/`). Bereits verarbeitete Episoden haben kein Transkript mehr im Cache.
 - Wenn der User eine Episode nochmal verarbeiten will: erneut `podcast-sync.py` laufen lassen.
 
 ## Index aktualisieren

@@ -27,10 +27,6 @@ claude plugin install memo-erstellen@mregi-plugins
 
 > **Format:** `owner/repo` — nicht `github:owner/repo` (das gibt einen Fehler).
 
-### Code-Tab / Chat-Tab (Desktop App)
-
-Funktioniert automatisch wenn der Workspace-Ordner geoeffnet ist (`.claude/skills/` Wrapper). Commands heissen hier `/memo-podcast`, `/memo-youtube`, etc.
-
 ### Fallback: ZIP-Upload (Cowork)
 
 Falls der GitHub-Marketplace nicht funktioniert:
@@ -39,16 +35,18 @@ Falls der GitHub-Marketplace nicht funktioniert:
 2. In Cowork: `+` → Plugins → Persoenlich → Plugin hochladen → ZIP waehlen
 3. Neue Session starten
 
-## Erster Start — Wizard
+## Erster Start
 
-Beim ersten Aufruf eines Commands fragt der Wizard:
+Beim ersten Aufruf ermittelt das Plugin den Memos-Ordner automatisch:
 
-1. **Memo-Pfad:** Wo sollen Memos gespeichert werden? (z.B. `~/Documents/memos`)
-2. **Leserprofil:** Hast du ein bestehendes Profil? Pfad angeben oder Template verwenden.
+1. **config.json** unter `~/.claude/plugin-config/memo-erstellen/` (falls vorhanden)
+2. **Auto-Discovery:** Sucht `_index.md` im aktuellen Ordner oder unter `wissen/memos/`
+3. **Fallback:** Fragt nach dem Pfad und speichert ihn in `config.json`
 
-Die persoenlichen Einstellungen werden unter `~/.claude/plugin-config/memo-erstellen/` gespeichert:
-- `config.json` — Ausgabepfad
-- `leserprofil.md` — Prinzipien und Referenzzitate
+Falls kein Leserprofil vorhanden ist (`{memo_output_dir}/leserprofil.md`), wird einmalig eines der verfuegbaren Profile zur Auswahl angeboten:
+- der-liberale, der-linke, der-rechte, der-woke, der-iyi, template
+
+Das Leserprofil liegt im Memos-Ordner — einmal gewaehlt, funktioniert es ueberall (CLI, Cowork).
 
 ## Commands
 
@@ -61,13 +59,27 @@ Die persoenlichen Einstellungen werden unter `~/.claude/plugin-config/memo-erste
 
 ## Was funktioniert wo?
 
-| Command | Chat | Code-Tab / CLI | Cowork |
-|---------|------|----------------|--------|
-| Podcast (Sync) | — | ✅ (braucht macOS) | — |
-| Podcast (Memo) | — | ✅ | ✅ |
-| YouTube | — | ✅ | ✅ (Allowlist noetig) |
-| Zitat | ✅ | ✅ | ✅ |
-| Gedanke | ✅ | ✅ | ✅ |
+| Command | Code-Tab / CLI | Cowork |
+|---------|----------------|--------|
+| Podcast (Sync) | ja (braucht macOS) | Terminal-Befehl wird angezeigt |
+| Podcast (Memo) | ja | ja (Cache muss vorhanden sein) |
+| YouTube | ja | ja (Allowlist noetig) |
+| Zitat | ja | ja |
+| Gedanke | ja | ja |
+
+## Ordnerstruktur
+
+```
+{memo_output_dir}/                 z.B. ~/Dropbox/workspace/wissen/memos/
+├── _index.md                      Inhaltsverzeichnis
+├── _raw/                          Rohtranskripte
+├── _cache/                        Transkript-Cache (via Dropbox geteilt)
+│   ├── episode-index.json
+│   ├── youtube-index.json
+│   └── transcripts/
+├── leserprofil.md                 Persoenliche Perspektive
+└── *.md                           Memos
+```
 
 ## Voraussetzungen
 
@@ -77,12 +89,6 @@ Die persoenlichen Einstellungen werden unter `~/.claude/plugin-config/memo-erste
 
 Zitat und Gedanke brauchen keine Voraussetzungen.
 
-## Leserprofil
-
-Das Leserprofil definiert deine persoenliche Perspektive. Es beeinflusst die Denkanstoesse und Zitatauswahl — nicht die Zusammenfassung oder Kernbotschaft (die bleiben neutral).
-
-Bearbeiten: `~/.claude/plugin-config/memo-erstellen/leserprofil.md`
-
 ## Deinstallation
 
 ```bash
@@ -90,8 +96,6 @@ claude plugin uninstall memo-erstellen@mregi-plugins
 claude plugin marketplace remove mregi-plugins
 ```
 
-Persoenliche Einstellungen bleiben unter `~/.claude/plugin-config/memo-erstellen/` erhalten.
-
 ## Version
 
-1.1.0
+1.2.0

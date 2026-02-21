@@ -4,6 +4,7 @@ Holt YouTube-Transkripte und legt sie im Memo-Cache ab.
 
 Usage:
     python3 scripts/youtube-transcript.py URL [URL ...]
+    python3 scripts/youtube-transcript.py --cache-dir ~/memos/_cache URL [URL ...]
 
 Beispiele:
     # Einzelnes Video
@@ -15,9 +16,13 @@ Beispiele:
     # Ganze Playlist
     python3 scripts/youtube-transcript.py "https://www.youtube.com/playlist?list=PLu5tKfQq0iybAoqpQcrA2QDUGAGnigaCM"
 
+    # Mit explizitem Cache-Verzeichnis
+    python3 scripts/youtube-transcript.py --cache-dir ~/Dropbox/workspace/wissen/memos/_cache "URL"
+
 Benötigt: pip3 install youtube-transcript-api
 """
 
+import argparse
 import json
 import os
 import re
@@ -240,11 +245,22 @@ def collect_video_ids(args):
 
 
 def main():
-    if len(sys.argv) < 2:
-        print("Usage: youtube-transcript.py URL [URL ...]")
-        print("       youtube-transcript.py https://www.youtube.com/watch?v=VIDEO_ID")
-        print("       youtube-transcript.py https://www.youtube.com/playlist?list=PLAYLIST_ID")
+    global CACHE_DIR, INDEX_FILE
+
+    parser = argparse.ArgumentParser(description="YouTube-Transkript → Cache")
+    parser.add_argument("--cache-dir", type=str, default=None,
+                        help="Cache-Verzeichnis (default: {PLUGIN_DIR}/_cache)")
+    parser.add_argument("urls", nargs="*", help="YouTube URLs oder Video-IDs")
+    args = parser.parse_args()
+
+    if not args.urls:
+        parser.print_help()
         sys.exit(1)
+
+    if args.cache_dir:
+        cache_base = os.path.expanduser(args.cache_dir)
+        CACHE_DIR = os.path.join(cache_base, "transcripts")
+        INDEX_FILE = os.path.join(cache_base, "youtube-index.json")
 
     if not check_dependencies():
         sys.exit(1)
@@ -254,7 +270,7 @@ def main():
     existing_ids = {entry["video_id"] for entry in index}
 
     # Video-IDs sammeln (einzelne + Playlists)
-    video_ids = collect_video_ids(sys.argv[1:])
+    video_ids = collect_video_ids(args.urls)
 
     if not video_ids:
         print("❌ Keine Videos gefunden.")

@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
 """
-Helper: Exportiert Podcast-Metadaten + TTML-Pfade als JSON nach Dropbox.
+Helper: Exportiert Podcast-Metadaten + TTML-Pfade als JSON.
 Einmal laufen lassen, danach kann Claude/Cowork alles lesen.
 
-Usage: python3 scripts/podcast-sync.py
+Usage:
+    python3 scripts/podcast-sync.py
+    python3 scripts/podcast-sync.py --cache-dir ~/Dropbox/workspace/wissen/memos/_cache
 """
 
+import argparse
 import glob
 import json
 import os
@@ -99,6 +102,18 @@ def parse_ttml_to_text(filepath):
 
 
 def main():
+    parser = argparse.ArgumentParser(description="Podcast-Sync: Apple Podcasts → Cache")
+    parser.add_argument("--cache-dir", type=str, default=None,
+                        help="Cache-Verzeichnis (default: {PLUGIN_DIR}/_cache)")
+    args = parser.parse_args()
+
+    global OUTPUT_JSON
+    if args.cache_dir:
+        cache_base = os.path.expanduser(args.cache_dir)
+        OUTPUT_JSON = os.path.join(cache_base, "episode-index.json")
+    else:
+        cache_base = os.path.join(PLUGIN_DIR, "_cache")
+
     # 1. Find TTML files
     ttml_files = {}
     for path in glob.glob(os.path.join(TTML_BASE, "**/transcript_*.ttml"), recursive=True):
@@ -190,7 +205,7 @@ def main():
     episodes.sort(key=lambda e: e.get("date") or "0000", reverse=True)
 
     # 4. Parse and cache transcripts as plain text
-    cache_dir = os.path.join(PLUGIN_DIR, "_cache", "transcripts")
+    cache_dir = os.path.join(cache_base, "transcripts")
     os.makedirs(cache_dir, exist_ok=True)
 
     for ep in episodes:

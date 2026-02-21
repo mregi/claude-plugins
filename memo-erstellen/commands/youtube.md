@@ -9,8 +9,9 @@ Verarbeitet ein YouTube-Video zu einem strukturierten Memo.
 
 Lies die gemeinsamen Regeln fuer Verarbeitung, Leserprofil und Fremdwoerter:
 - [Verarbeitung](${CLAUDE_PLUGIN_ROOT}/skills/_shared/verarbeitung.md)
-- [Leserprofil](~/.claude/plugin-config/memo-erstellen/leserprofil.md)
 - [Fremdwoerter](${CLAUDE_PLUGIN_ROOT}/skills/_shared/fremdwoerter.md)
+
+**Fuehre zuerst die Konfiguration (Schritt 1-3) aus `verarbeitung.md` aus.** Daraus ergibt sich `{memo_output_dir}`.
 
 ---
 
@@ -20,15 +21,15 @@ Drei Wege, in dieser Reihenfolge pruefen:
 
 ### 1a. Transkript aus Cache
 
-Video-ID aus $ARGUMENTS oder User-URL extrahieren. Pruefe ob `${CLAUDE_PLUGIN_ROOT}/_cache/transcripts/yt_{VIDEO_ID}.txt` existiert.
+Video-ID aus $ARGUMENTS oder User-URL extrahieren. Pruefe ob `{memo_output_dir}/_cache/transcripts/yt_{VIDEO_ID}.txt` existiert.
 
-- **Ja →** Transkript laden, Metadaten aus `${CLAUDE_PLUGIN_ROOT}/_cache/youtube-index.json` holen. Weiter mit Schritt 2.
+- **Ja →** Transkript laden, Metadaten aus `{memo_output_dir}/_cache/youtube-index.json` holen. Weiter mit Schritt 2.
 - **Nein →** Weiter mit 1b.
 
 ### 1b. Script ausfuehren
 
 ```bash
-python3 ${CLAUDE_PLUGIN_ROOT}/scripts/youtube-transcript.py "$ARGUMENTS"
+python3 ${CLAUDE_PLUGIN_ROOT}/scripts/youtube-transcript.py --cache-dir "{memo_output_dir}/_cache" "$ARGUMENTS"
 ```
 
 Falls `youtube-transcript-api` nicht installiert:
@@ -44,7 +45,7 @@ Falls der User das Transkript direkt in den Chat pastet (z.B. von YouTube kopier
 
 ## Schritt 2: Metadaten
 
-- Aus `${CLAUDE_PLUGIN_ROOT}/_cache/youtube-index.json` uebernehmen falls vorhanden: title, author.
+- Aus `{memo_output_dir}/_cache/youtube-index.json` uebernehmen falls vorhanden: title, author.
 - Zusaetzlich via Websuche ergaenzen falls noetig: Datum, Kanal, Kontext.
 - Falls User das Transkript direkt pastet: User nach Metadaten fragen oder aus Kontext ableiten.
 
@@ -52,14 +53,12 @@ Falls der User das Transkript direkt in den Chat pastet (z.B. von YouTube kopier
 
 Erstelle das Memo gemaess [Verarbeitung](${CLAUDE_PLUGIN_ROOT}/skills/_shared/verarbeitung.md).
 
-Beachte das [Leserprofil](~/.claude/plugin-config/memo-erstellen/leserprofil.md) fuer Denkanstoesse und Zitatauswahl.
+Beachte das [Leserprofil]({memo_output_dir}/leserprofil.md) fuer Denkanstoesse und Zitatauswahl.
 
 Beachte die [Fremdwort-Regeln](${CLAUDE_PLUGIN_ROOT}/skills/_shared/fremdwoerter.md).
 
 ## Schritt 4: Speichern + Index
 
-Lies `~/.claude/plugin-config/memo-erstellen/config.json` fuer `memo_output_dir`.
-
 1. Memo speichern als `{memo_output_dir}/{YYYY-MM-DD}_{titel-slug}.md`
-2. Rohtranskript verschieben (bei Cache-Variante): `_cache/transcripts/yt_{VIDEO_ID}.txt` → `{memo_output_dir}/_raw/{gleicher-dateiname}.txt`
+2. Rohtranskript verschieben (bei Cache-Variante): `{memo_output_dir}/_cache/transcripts/yt_{VIDEO_ID}.txt` → `{memo_output_dir}/_raw/{gleicher-dateiname}.txt`
 3. `{memo_output_dir}/_index.md` aktualisieren (neuster Eintrag oben)

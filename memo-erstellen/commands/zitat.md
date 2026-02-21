@@ -8,8 +8,9 @@ Verarbeitet ein Zitat, eine Buchnotiz oder einen Artikel-Ausschnitt zu einem str
 
 Lies die gemeinsamen Regeln fuer Verarbeitung, Leserprofil und Fremdwoerter:
 - [Verarbeitung](${CLAUDE_PLUGIN_ROOT}/skills/_shared/verarbeitung.md)
-- [Leserprofil](~/.claude/plugin-config/memo-erstellen/leserprofil.md)
 - [Fremdwoerter](${CLAUDE_PLUGIN_ROOT}/skills/_shared/fremdwoerter.md)
+
+**Fuehre zuerst die Konfiguration (Schritt 1-3) aus `verarbeitung.md` aus.** Daraus ergibt sich `{memo_output_dir}`.
 
 ---
 
@@ -38,11 +39,9 @@ Erstelle das Memo gemaess [Verarbeitung](${CLAUDE_PLUGIN_ROOT}/skills/_shared/ve
 - Kontext: kurz
 - Denkanstoesse: 1-2
 
-Beachte das [Leserprofil](~/.claude/plugin-config/memo-erstellen/leserprofil.md) und die [Fremdwort-Regeln](${CLAUDE_PLUGIN_ROOT}/skills/_shared/fremdwoerter.md).
+Beachte das [Leserprofil]({memo_output_dir}/leserprofil.md) und die [Fremdwort-Regeln](${CLAUDE_PLUGIN_ROOT}/skills/_shared/fremdwoerter.md).
 
 ## Schritt 4: Speichern + Index
-
-Lies `~/.claude/plugin-config/memo-erstellen/config.json` fuer `memo_output_dir`.
 
 1. Memo speichern als `{memo_output_dir}/{YYYY-MM-DD}_{titel-slug}.md`
 2. Kein Rohtranskript noetig (Input ist kurz genug fuers Memo)
