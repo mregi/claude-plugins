@@ -6,32 +6,33 @@ Erstelle aus dem Input ein strukturiertes Memo. Sprache = Sprache des Inputs.
 
 Persoenliche Einstellungen liegen unter `~/.claude/plugin-config/memo-erstellen/`.
 
-### config.json
+**WICHTIG — Ersteinrichtung Schritt fuer Schritt:**
+- Jede Frage EINZELN stellen und auf die Antwort des Users warten.
+- NICHT mehrere Fragen auf einmal stellen.
+- NICHTS automatisch ableiten — weder aus CLAUDE.md noch aus der Projektstruktur.
+
+### Schritt 1: config.json
 
 Pruefe ob `~/.claude/plugin-config/memo-erstellen/config.json` existiert.
 
-**Falls vorhanden →** Lies `memo_output_dir` und mache weiter.
+**Falls vorhanden →** Lies `memo_output_dir` und gehe zu Schritt 2.
 
-**Falls NICHT vorhanden →** Ersteinrichtung:
+**Falls NICHT vorhanden →** Frage den User:
 
-**WICHTIG:** Den Pfad IMMER explizit beim User erfragen. NIEMALS aus CLAUDE.md, Projektstruktur oder anderen Quellen ableiten.
+> Willkommen bei memo-erstellen! Ich richte das Plugin fuer dich ein.
+>
+> **Wo sollen deine Memos gespeichert werden?**
+> (z.B. `~/Documents/memos` oder `~/Dropbox/workspace/wissen/memos`)
 
-1. Zeige dem User:
-   > Willkommen bei memo-erstellen! Ich richte das Plugin fuer dich ein.
-   >
-   > **Wo sollen deine Memos gespeichert werden?**
-   > (z.B. `~/Documents/memos` oder `~/Dropbox/workspace/wissen/memos`)
+⛔ STOPP — Warte auf Antwort. Erst weitermachen wenn der User einen Pfad nennt.
 
-2. Warte auf Antwort des Users. Erst weitermachen wenn der User einen Pfad nennt.
-
-3. Erstelle `~/.claude/plugin-config/memo-erstellen/config.json`:
+Dann:
+1. Erstelle `~/.claude/plugin-config/memo-erstellen/config.json`:
    ```json
    { "memo_output_dir": "{vom-user-angegebener-pfad}" }
    ```
-
-4. Erstelle den Zielordner + `_raw/` Unterordner falls noetig.
-
-5. Erstelle `_index.md` im Zielordner falls nicht vorhanden:
+2. Erstelle den Zielordner + `_raw/` Unterordner falls noetig.
+3. Erstelle `_index.md` im Zielordner falls nicht vorhanden:
    ```markdown
    # Memo-Index
 
@@ -39,21 +40,24 @@ Pruefe ob `~/.claude/plugin-config/memo-erstellen/config.json` existiert.
    |-------|-------|--------|--------|
    ```
 
-### leserprofil.md
+### Schritt 2: leserprofil.md
 
 Pruefe ob `~/.claude/plugin-config/memo-erstellen/leserprofil.md` existiert.
 
-**Falls vorhanden →** Weiter.
+**Falls vorhanden →** Gehe zu Schritt 3.
 
 **Falls NICHT vorhanden →** Frage den User:
+
 > **Hast du ein bestehendes Leserprofil?** Gib den Pfad an, oder ich erstelle eins aus dem Template.
+
+⛔ STOPP — Warte auf Antwort. NIEMALS automatisch das Template kopieren ohne zu fragen.
 
 - User gibt Pfad → kopiere die Datei nach `~/.claude/plugin-config/memo-erstellen/leserprofil.md`
 - User sagt nein / hat keins → kopiere `${CLAUDE_PLUGIN_ROOT}/skills/_shared/leserprofil-template.md` nach `~/.claude/plugin-config/memo-erstellen/leserprofil.md` und zeige:
   > Leserprofil aus Template erstellt. Memos sind erstmal neutral.
   > Du kannst `leserprofil.md` spaeter personalisieren — trage deine Prinzipien und Referenzzitate ein, dann werden Denkanstoesse auf dich zugeschnitten.
 
-### Ausgabepfad
+### Schritt 3: Ausgabepfad
 
 Lies `~/.claude/plugin-config/memo-erstellen/config.json` fuer den Ausgabepfad. Das Feld `memo_output_dir` bestimmt wo Memos gespeichert werden. Tilde (`~`) am Anfang durch den Home-Pfad des Users ersetzen.
 
