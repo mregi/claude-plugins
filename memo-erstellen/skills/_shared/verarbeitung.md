@@ -14,13 +14,15 @@ Pruefe ob `~/.claude/plugin-config/memo-erstellen/config.json` existiert.
 
 **Falls NICHT vorhanden →** Ersteinrichtung:
 
+**WICHTIG:** Den Pfad IMMER explizit beim User erfragen. NIEMALS aus CLAUDE.md, Projektstruktur oder anderen Quellen ableiten.
+
 1. Zeige dem User:
    > Willkommen bei memo-erstellen! Ich richte das Plugin fuer dich ein.
    >
    > **Wo sollen deine Memos gespeichert werden?**
    > (z.B. `~/Documents/memos` oder `~/Dropbox/workspace/wissen/memos`)
 
-2. Warte auf Antwort des Users.
+2. Warte auf Antwort des Users. Erst weitermachen wenn der User einen Pfad nennt.
 
 3. Erstelle `~/.claude/plugin-config/memo-erstellen/config.json`:
    ```json
