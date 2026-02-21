@@ -16,10 +16,10 @@ zip -r "$DIST_DIR/$ZIP_NAME" \
   commands/ \
   skills/_shared/ \
   scripts/ \
-  config.json \
   config-template.json \
   README.md \
-  -x '*.DS_Store'
+  -x '*.DS_Store' \
+  -x 'skills/_shared/leserprofil.md'
 
 echo ""
 echo "✓ ZIP gebaut: $DIST_DIR/$ZIP_NAME"
