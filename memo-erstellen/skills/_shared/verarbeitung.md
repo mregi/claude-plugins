@@ -42,7 +42,7 @@ Dann: Erstelle `~/.claude/plugin-config/memo-erstellen/config.json`:
 
 ### Schritt 2: Leserprofil
 
-Pruefe ob `{memo_output_dir}/leserprofil.md` existiert.
+Pruefe ob `{memo_output_dir}/_leserprofil.md` existiert.
 
 **Falls vorhanden →** Gehe zu Schritt 3.
 
@@ -56,11 +56,11 @@ Pruefe ob `{memo_output_dir}/leserprofil.md` existiert.
 > 5. **der-iyi** — Intellectual Yet Idiot (nach Taleb), Satire auf Expertentum ohne Skin in the Game
 > 6. **template** — Neutrales Template zum selbst ausfuellen
 >
-> Welches Profil? (Oder eigenes ablegen: `{memo_output_dir}/leserprofil.md`)
+> Welches Profil? (Oder eigenes ablegen: `{memo_output_dir}/_leserprofil.md`)
 
 ⛔ STOPP — Warte auf Auswahl.
 
-Kopiere `${CLAUDE_PLUGIN_ROOT}/skills/_shared/leserprofil-{auswahl}.md` nach `{memo_output_dir}/leserprofil.md`.
+Kopiere `${CLAUDE_PLUGIN_ROOT}/skills/_shared/leserprofil-{auswahl}.md` nach `{memo_output_dir}/_leserprofil.md`.
 
 ### Schritt 3: Ordnerstruktur sicherstellen
 

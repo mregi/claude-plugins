@@ -39,7 +39,7 @@ Erstelle das Memo gemaess [Verarbeitung](${CLAUDE_PLUGIN_ROOT}/skills/_shared/ve
 - Kontext: kurz
 - Denkanstoesse: 1-2
 
-Beachte das [Leserprofil]({memo_output_dir}/leserprofil.md) und die [Fremdwort-Regeln](${CLAUDE_PLUGIN_ROOT}/skills/_shared/fremdwoerter.md).
+Beachte das [Leserprofil]({memo_output_dir}/_leserprofil.md) und die [Fremdwort-Regeln](${CLAUDE_PLUGIN_ROOT}/skills/_shared/fremdwoerter.md).
 
 ## Schritt 4: Speichern + Index
 

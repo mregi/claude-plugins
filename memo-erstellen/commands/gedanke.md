@@ -31,7 +31,7 @@ Erstelle das Memo gemaess [Verarbeitung](${CLAUDE_PLUGIN_ROOT}/skills/_shared/ve
 
 Frontmatter: `quelle: eigener-gedanke`, `datum: {heute}`.
 
-Beachte das [Leserprofil]({memo_output_dir}/leserprofil.md) — auch eigene Gedanken duerfen kritisch hinterfragt werden.
+Beachte das [Leserprofil]({memo_output_dir}/_leserprofil.md) — auch eigene Gedanken duerfen kritisch hinterfragt werden.
 
 ## Schritt 3: Speichern + Index
 

@@ -53,7 +53,7 @@ Falls der User das Transkript direkt in den Chat pastet (z.B. von YouTube kopier
 
 Erstelle das Memo gemaess [Verarbeitung](${CLAUDE_PLUGIN_ROOT}/skills/_shared/verarbeitung.md).
 
-Beachte das [Leserprofil]({memo_output_dir}/leserprofil.md) fuer Denkanstoesse und Zitatauswahl.
+Beachte das [Leserprofil]({memo_output_dir}/_leserprofil.md) fuer Denkanstoesse und Zitatauswahl.
 
 Beachte die [Fremdwort-Regeln](${CLAUDE_PLUGIN_ROOT}/skills/_shared/fremdwoerter.md).
 

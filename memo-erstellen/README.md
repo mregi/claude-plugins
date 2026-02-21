@@ -43,7 +43,7 @@ Beim ersten Aufruf ermittelt das Plugin den Memos-Ordner automatisch:
 2. **Auto-Discovery:** Sucht `_index.md` im aktuellen Ordner oder unter `wissen/memos/`
 3. **Fallback:** Fragt nach dem Pfad und speichert ihn in `config.json`
 
-Falls kein Leserprofil vorhanden ist (`{memo_output_dir}/leserprofil.md`), wird einmalig eines der verfuegbaren Profile zur Auswahl angeboten:
+Falls kein Leserprofil vorhanden ist (`{memo_output_dir}/_leserprofil.md`), wird einmalig eines der verfuegbaren Profile zur Auswahl angeboten:
 - der-liberale, der-linke, der-rechte, der-woke, der-iyi, template
 
 Das Leserprofil liegt im Memos-Ordner — einmal gewaehlt, funktioniert es ueberall (CLI, Cowork).
@@ -77,7 +77,7 @@ Das Leserprofil liegt im Memos-Ordner — einmal gewaehlt, funktioniert es ueber
 │   ├── episode-index.json
 │   ├── youtube-index.json
 │   └── transcripts/
-├── leserprofil.md                 Persoenliche Perspektive
+├── _leserprofil.md                 Persoenliche Perspektive
 └── *.md                           Memos
 ```
 
@@ -98,4 +98,4 @@ claude plugin marketplace remove mregi-plugins
 
 ## Version
 
-1.2.0
+1.2.2
