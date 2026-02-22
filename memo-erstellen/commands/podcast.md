@@ -37,10 +37,12 @@ python3 ${CLAUDE_PLUGIN_ROOT}/scripts/podcast-sync.py --cache-dir "{memo_output_
 
 **Falls der Sync fehlschlaegt** (z.B. kein macOS, kein Apple Podcasts, Sandbox):
 
+Zeige dem User den Befehl mit **aufgeloestem `{memo_output_dir}`** (den tatsaechlichen Pfad aus Schritt 1 einsetzen):
+
 > Podcast-Sync benoetigt macOS mit Apple Podcasts. Im Mac-Terminal ausfuehren:
 >
 > ```bash
-> python3 ~/.claude/plugins/cache/mregi-plugins/memo-erstellen/*/scripts/podcast-sync.py \
+> python3 "$(ls -1d ~/.claude/plugins/cache/mregi-plugins/memo-erstellen/*/scripts/podcast-sync.py | tail -1)" \
 >   --cache-dir "{memo_output_dir}/_cache"
 > ```
 >
