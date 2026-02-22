@@ -26,12 +26,11 @@ Pruefe ob `{memo_output_dir}/_cache/episode-index.json` existiert und lies das A
   > ```
   > Falls kein Alias eingerichtet:
   > ```
-  > python3 "$(ls -1d ~/.claude/plugins/cache/mregi-plugins/memo-erstellen/*/scripts/podcast-sync.py | tail -1)" \
-  >   --cache-dir "{memo_output_dir}/_cache"
+  > python3 "$(ls -1d ~/.claude/plugins/cache/mregi-plugins/memo-erstellen/*/scripts/podcast-sync.py | tail -1)"
   > ```
   > Bescheid geben wenn fertig.
 
-  Ersetze `{memo_output_dir}` mit dem **tatsaechlichen Pfad** aus der Konfiguration.
+  ⛔ **STOPP — NICHT weitermachen bis User "fertig" sagt.**
 
 - **Vorhanden →** Frage:
   > Podcast-Index vom {Datum}. {N} Episoden. Aktualisieren?
@@ -40,15 +39,14 @@ Pruefe ob `{memo_output_dir}/_cache/episode-index.json` existiert und lies das A
 
   ⛔ **STOPP — NICHT weitermachen bis User "fertig" sagt.**
 
-  Zeige dem User (ersetze `{memo_output_dir}` mit dem tatsaechlichen Pfad):
+  Zeige dem User:
   > Bitte im Mac-Terminal ausfuehren:
   > ```
   > podcast-sync
   > ```
   > Falls kein Alias eingerichtet:
   > ```
-  > python3 "$(ls -1d ~/.claude/plugins/cache/mregi-plugins/memo-erstellen/*/scripts/podcast-sync.py | tail -1)" \
-  >   --cache-dir "{memo_output_dir}/_cache"
+  > python3 "$(ls -1d ~/.claude/plugins/cache/mregi-plugins/memo-erstellen/*/scripts/podcast-sync.py | tail -1)"
   > ```
   > Bescheid geben wenn fertig.
 

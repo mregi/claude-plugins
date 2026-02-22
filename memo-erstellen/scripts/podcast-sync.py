@@ -5,7 +5,10 @@ Einmal laufen lassen, danach kann Claude/Cowork alles lesen.
 
 Usage:
     python3 scripts/podcast-sync.py
-    python3 scripts/podcast-sync.py --cache-dir ~/Dropbox/workspace/wissen/memos/_cache
+    python3 scripts/podcast-sync.py --cache-dir /path/to/memos/_cache
+
+Without --cache-dir, reads memo_output_dir from
+~/.claude/plugin-config/memo-erstellen/config.json (set during first plugin run).
 """
 
 import argparse
@@ -110,9 +113,24 @@ def main():
     global OUTPUT_JSON
     if args.cache_dir:
         cache_base = os.path.expanduser(args.cache_dir)
-        OUTPUT_JSON = os.path.join(cache_base, "episode-index.json")
     else:
-        cache_base = os.path.join(PLUGIN_DIR, "_cache")
+        # Auto-detect from plugin config
+        config_path = os.path.expanduser(
+            "~/.claude/plugin-config/memo-erstellen/config.json"
+        )
+        if os.path.exists(config_path):
+            with open(config_path) as f:
+                config = json.load(f)
+            memo_dir = os.path.expanduser(config.get("memo_output_dir", ""))
+            if memo_dir:
+                cache_base = os.path.join(memo_dir, "_cache")
+                print(f"📁 Memos-Ordner aus config.json: {memo_dir}")
+            else:
+                cache_base = os.path.join(PLUGIN_DIR, "_cache")
+        else:
+            print("⚠️  Keine config.json gefunden — verwende Plugin-Cache")
+            cache_base = os.path.join(PLUGIN_DIR, "_cache")
+    OUTPUT_JSON = os.path.join(cache_base, "episode-index.json")
 
     # 1. Load existing index (to preserve entries when Apple cleans up TTMLs)
     existing_index = {}
