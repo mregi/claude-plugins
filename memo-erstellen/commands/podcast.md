@@ -15,43 +15,29 @@ Lies die gemeinsamen Regeln fuer Verarbeitung, Leserprofil und Fremdwoerter:
 
 ---
 
-## Schritt 1: Sync pruefen
+## Schritt 1: Index pruefen
 
-Pruefe ob `{memo_output_dir}/_cache/episode-index.json` existiert.
+Pruefe ob `{memo_output_dir}/_cache/episode-index.json` existiert und lies das Aenderungsdatum.
 
-- **Nicht vorhanden →** Sync ausfuehren (siehe unten).
-- **Vorhanden →** Pruefe das Aenderungsdatum. Zeige dem User:
-  > Podcast-Index vom {Datum}. {N} Episoden verfuegbar.
+- **Nicht vorhanden →** Zeige:
+  > Kein Podcast-Index vorhanden. Bitte im Mac-Terminal ausfuehren:
+  > ```
+  > podcast-sync
+  > ```
+  > Falls kein Alias eingerichtet:
+  > ```
+  > python3 "$(ls -1d ~/.claude/plugins/cache/mregi-plugins/memo-erstellen/*/scripts/podcast-sync.py | tail -1)" \
+  >   --cache-dir "{memo_output_dir}/_cache"
+  > ```
+  > Bescheid geben wenn fertig.
 
-  Falls aelter als 7 Tage, zusaetzlich fragen:
-  > Der Index ist {X} Tage alt. Neue Episoden gehoert? Soll ich den Sync ausfuehren?
+  Ersetze `{memo_output_dir}` mit dem **tatsaechlichen Pfad** aus der Konfiguration.
 
-  Falls User "ja" → Sync ausfuehren. Falls "passt" → weiter.
+- **Vorhanden →** Frage:
+  > Podcast-Index vom {Datum}. {N} Episoden. Aktualisieren?
 
-### Sync ausfuehren
-
-Pruefe zuerst ob Apple Podcasts verfuegbar ist:
-```bash
-test -f ~/Library/Group\ Containers/243LU875E5.groups.com.apple.podcasts/Documents/MTLibrary.sqlite && echo "OK" || echo "NICHT_VERFUEGBAR"
-```
-
-**Falls OK** → Sync direkt ausfuehren:
-```bash
-python3 ${CLAUDE_PLUGIN_ROOT}/scripts/podcast-sync.py --cache-dir "{memo_output_dir}/_cache"
-```
-
-**Falls NICHT_VERFUEGBAR** (Cowork/Sandbox) → Sync ueberspringen und dem User den Terminal-Befehl zeigen. Ersetze `{memo_output_dir}` mit dem **tatsaechlichen Pfad** aus Schritt 1:
-
-> Podcast-Sync benoetigt macOS mit Apple Podcasts. Im Mac-Terminal ausfuehren:
->
-> ```bash
-> python3 "$(ls -1d ~/.claude/plugins/cache/mregi-plugins/memo-erstellen/*/scripts/podcast-sync.py | tail -1)" \
->   --cache-dir "{memo_output_dir}/_cache"
-> ```
->
-> **Tipp:** Shell-Alias einrichten fuer schnellen Zugriff — siehe README.
->
-> Danach hier weitermachen.
+  - User sagt ja → gleichen Terminal-Befehl zeigen, warten auf "fertig"
+  - User sagt nein / waehlt direkt eine Episode → weiter zu Schritt 2
 
 ## Schritt 2: Episoden auflisten
 
