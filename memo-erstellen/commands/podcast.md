@@ -36,8 +36,25 @@ Pruefe ob `{memo_output_dir}/_cache/episode-index.json` existiert und lies das A
 - **Vorhanden →** Frage:
   > Podcast-Index vom {Datum}. {N} Episoden. Aktualisieren?
 
-  - User sagt ja → gleichen Terminal-Befehl zeigen, warten auf "fertig"
-  - User sagt nein / waehlt direkt eine Episode → weiter zu Schritt 2
+  **Falls User ja sagt:**
+
+  ⛔ **STOPP — NICHT weitermachen bis User "fertig" sagt.**
+
+  Zeige dem User (ersetze `{memo_output_dir}` mit dem tatsaechlichen Pfad):
+  > Bitte im Mac-Terminal ausfuehren:
+  > ```
+  > podcast-sync
+  > ```
+  > Falls kein Alias eingerichtet:
+  > ```
+  > python3 "$(ls -1d ~/.claude/plugins/cache/mregi-plugins/memo-erstellen/*/scripts/podcast-sync.py | tail -1)" \
+  >   --cache-dir "{memo_output_dir}/_cache"
+  > ```
+  > Bescheid geben wenn fertig.
+
+  Warte auf Bestaetigung. Dann `episode-index.json` **neu einlesen**. Weiter zu Schritt 2.
+
+  **Falls User nein sagt** oder direkt eine Episode waehlt → weiter zu Schritt 2.
 
 ## Schritt 2: Episoden auflisten
 
