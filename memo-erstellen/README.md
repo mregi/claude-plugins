@@ -81,6 +81,16 @@ Das Leserprofil liegt im Memos-Ordner — einmal gewaehlt, funktioniert es ueber
 └── *.md                           Memos
 ```
 
+## Podcast-Sync Alias
+
+Fuer schnellen Sync im Terminal empfiehlt sich ein Shell-Alias in `~/.zshrc`:
+
+```bash
+alias podcast-sync='python3 "$(ls -1d ~/.claude/plugins/cache/mregi-plugins/memo-erstellen/*/scripts/podcast-sync.py | tail -1)" --cache-dir ~/Library/CloudStorage/Dropbox/workspace/wissen/memos/_cache'
+```
+
+Danach reicht im Terminal: `podcast-sync` — Index und Transkripte landen im Workspace-Cache.
+
 ## Voraussetzungen
 
 - Python 3 (fuer Podcast-Sync und YouTube-Transkripte)
@@ -98,4 +108,4 @@ claude plugin marketplace remove mregi-plugins
 
 ## Version
 
-1.2.2
+1.2.4

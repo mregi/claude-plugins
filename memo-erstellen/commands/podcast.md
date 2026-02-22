@@ -30,14 +30,17 @@ Pruefe ob `{memo_output_dir}/_cache/episode-index.json` existiert.
 
 ### Sync ausfuehren
 
-Versuche:
+Pruefe zuerst ob Apple Podcasts verfuegbar ist:
+```bash
+test -f ~/Library/Group\ Containers/243LU875E5.groups.com.apple.podcasts/Documents/MTLibrary.sqlite && echo "OK" || echo "NICHT_VERFUEGBAR"
+```
+
+**Falls OK** → Sync direkt ausfuehren:
 ```bash
 python3 ${CLAUDE_PLUGIN_ROOT}/scripts/podcast-sync.py --cache-dir "{memo_output_dir}/_cache"
 ```
 
-**Falls der Sync fehlschlaegt** (z.B. kein macOS, kein Apple Podcasts, Sandbox):
-
-Zeige dem User den Befehl mit **aufgeloestem `{memo_output_dir}`** (den tatsaechlichen Pfad aus Schritt 1 einsetzen):
+**Falls NICHT_VERFUEGBAR** (Cowork/Sandbox) → Sync ueberspringen und dem User den Terminal-Befehl zeigen. Ersetze `{memo_output_dir}` mit dem **tatsaechlichen Pfad** aus Schritt 1:
 
 > Podcast-Sync benoetigt macOS mit Apple Podcasts. Im Mac-Terminal ausfuehren:
 >
@@ -45,6 +48,8 @@ Zeige dem User den Befehl mit **aufgeloestem `{memo_output_dir}`** (den tatsaech
 > python3 "$(ls -1d ~/.claude/plugins/cache/mregi-plugins/memo-erstellen/*/scripts/podcast-sync.py | tail -1)" \
 >   --cache-dir "{memo_output_dir}/_cache"
 > ```
+>
+> **Tipp:** Shell-Alias einrichten fuer schnellen Zugriff — siehe README.
 >
 > Danach hier weitermachen.
 
