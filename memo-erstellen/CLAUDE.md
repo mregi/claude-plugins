@@ -30,8 +30,8 @@ projects/plugins/privat/memo-erstellen/   ← Source of Truth → GitHub mregi/c
 ├── _leserprofil.md                        ← Persoenliche Perspektive (einmal gewaehlt)
 └── *.md                                  ← Memos
 
-~/.claude/plugin-config/memo-erstellen/   ← Optional: CLI-Konfiguration
-└── config.json                           ← memo_output_dir (persistent fuer CLI)
+~/.claude/plugin-config/memo-erstellen/   ← Konfiguration (CLI + podcast-sync.py)
+└── config.json                           ← memo_output_dir (von Plugin + Scripts gelesen)
 ```
 
 **Ein Pfad fuer alle Umgebungen:** Alles laeuft ueber das Plugin-System (GitHub → Plugin-Cache). `${CLAUDE_PLUGIN_ROOT}` wird vom Plugin-System aufgeloest.
@@ -50,11 +50,15 @@ Das Plugin sucht den Memos-Ordner in dieser Reihenfolge:
 
 ---
 
-## Learnings (Stand 2026-02-21)
+## Learnings (Stand 2026-02-22)
 
-Ueber 4 Sessions (18.–21. Feb) haben wir das Plugin in allen Claude-Umgebungen zum Laufen gebracht. Zuerst mit Dual-Path (Wrapper + Plugin-System), dann vereinfacht auf Single-Path nur ueber das Plugin-System.
+Ueber 5 Sessions (18.–22. Feb) haben wir das Plugin in allen Claude-Umgebungen zum Laufen gebracht.
 
-**v1.2.0:** Leserprofil und Cache in den Memos-Ordner verschoben. Auto-Discovery statt Wizard. Cowork braucht kein Setup mehr (gemounteter Ordner reicht). Scripts mit `--cache-dir` fuer flexible Cache-Ablage.
+**v1.2.0:** Leserprofil und Cache in den Memos-Ordner verschoben. Auto-Discovery statt Wizard. Cowork braucht kein Setup mehr.
+
+**v1.2.3–v1.2.6:** Wildcard-Bug gefixt (`| tail -1` waehlt neueste Plugin-Version). Cowork-Sync-Flow vereinfacht: einfache "Aktualisieren?"-Frage + ⛔ STOPP-Marker. Cowork AI respektiert den STOPP und wartet auf User-Bestaetigung.
+
+**v1.2.7:** `podcast-sync.py` liest `config.json` automatisch — kein `--cache-dir` mehr noetig. Plugin ist plug-and-play auf jedem Mac. Shell-Alias `podcast-sync` in README dokumentiert.
 
 ---
 
